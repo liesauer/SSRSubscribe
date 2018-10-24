@@ -5,10 +5,9 @@ define('VENDOR_DIR', ROOT_DIR . '/vendor');
 define('INC_DIR', ROOT_DIR . '/inc');
 define('DATA_DIR', ROOT_DIR . '/data');
 define('ROUTE_DIR', ROOT_DIR . '/route');
+define('CONFIG_DIR', ROOT_DIR . '/config');
 
 require VENDOR_DIR . '/autoload.php';
-
-// require ROOT_DIR . '/../GLib/autoload.php';
 
 error_reporting(~E_ALL);
 

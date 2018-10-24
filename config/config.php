@@ -1,9 +1,3 @@
-# SSRSubscribe
-这是一个用PHP写的小小的酸酸乳订阅。
-
-## 配置
-编辑 `config/config.php` ，所有的东西都在里面了
-```php
 <?php
 
 return [
@@ -25,36 +19,3 @@ return [
         'YY群友' => 'ghi',
     ],
 ];
-```
-
-## 初始化
-```shell
-cd PROJECT_DIR
-composer install
-```
-
-## 怎么运行
-本地
-```shell
-cd PROJECT_DIR
-php -S localhost:8080
-```
-
-服务器
-丢到服务器上面就完事了
-
-## 路由
-```text
-/usage
-```
-```text
-/subscribe?ACCESS_TOKEN=xxx
-```
-
-如果你的程序不是放在根目录下，假设放在`ssr`目录下，那么对应的路由就是
-```text
-/ssr/usage
-```
-```text
-/ssr/subscribe?ACCESS_TOKEN=xxx
-```

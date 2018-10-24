@@ -4,16 +4,12 @@ use nulastudio\Middleware;
 use nulastudio\SSR\SSR;
 use nulastudio\SSR\SSRGroup;
 
-$access_tokens = [
-    '自己人'  => 'abc',
-    'XX群友' => 'def',
-    'YY群友' => 'ghi',
-];
-$SSRs = require ROOT_DIR . '/ssr.php';
-$SSs  = [];
-if (file_exists(ROOT_DIR . '/ss.php')) {
-    $SSs = require ROOT_DIR . '/ss.php';
-}
+$config        = require CONFIG_DIR . '/config.php';
+$access_tokens = $config['access_token'];
+$SSRs          = require ROOT_DIR . '/ssr.php';
+$SSs           = require ROOT_DIR . '/ss.php';
+$SSRs          = array_merge($SSRs, $config['ssr']);
+$SSs           = array_merge($SSs, $config['ss']);
 
 $middlewares = [
     function ($next, ...$params) {
@@ -53,12 +49,11 @@ $middlewares = [
     },
 ];
 
-Router::get('subscribe', middleware(function (...$params) {
-    global $SSRs;
-    global $SSs;
+Router::get('subscribe', middleware(function (...$params) use ($SSRs, $SSs, $config) {
     $SSRGroup       = new SSRGroup();
-    $SSRGroup->name = 'LASSRs';
+    $SSRGroup->name = $config['subscribe_name'];
 
+    // subscribe list can not be empty!
     if (empty($SSRs) && empty($SSs)) {
         $SSRGroup->addSSR(SSR::SSRFromArray([
             'host'     => '127.0.0.1',
@@ -74,29 +69,8 @@ Router::get('subscribe', middleware(function (...$params) {
     foreach (array_merge($SSRs, $SSs) as $ssr_str) {
         $SSRGroup->addSSR(SSR::SSRFromLink($ssr_str));
     }
-    // foreach ($SSs as $ss_str) {
-    //     var_dump($ss_str);
-    //     var_dump(SS::SSFromLink($ss_str));
-    //     // $SSRGroup->addSSR(SSR::SSRFromSS(SS::SSFromLink($ss_str)));
-    // }
     return (string) $SSRGroup;
 }));
-Router::get('dumpgg', function (...$params) {
-    global $SSRs;
-    global $SSs;
-    @header('Content-Type: text/html; charset=utf-8');
-    foreach (array_merge($SSRs, $SSs) as $ssr_str) {
-        // echo '<pre>';
-        // var_dump(SSR::SSRFromLink($ssr_str));
-        $ssr = SSR::SSRFromLink($ssr_str);
-        echo "{$ssr->host}:{$ssr->port}";
-        if ($ssr->remarks) {
-            echo "[{$ssr->remarks}]";
-        }
-        echo '<hr />';
-        // echo Util::urlsafe_b64decode(trim($ssr_str,'ssr://')) . "<br /><hr />";
-    }
-});
 Router::get('usage', function (...$params) {
     @header('Content-Type: application/json; charset=utf-8');
     echo @file_get_contents(DATA_DIR . '/usage.json');

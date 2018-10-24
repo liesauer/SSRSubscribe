@@ -1,1 +1,0 @@
-ss://method:password@server:port
