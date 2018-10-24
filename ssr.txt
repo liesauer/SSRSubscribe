@@ -1,0 +1,26 @@
+ssr://host:port:protocol:method:obfs:base64pass/?obfsparam=base64&protoparam=&remarks=base64&group=base64&udpport=0&uot=1
+
+string main_part = server + ":" + server_port + ":" + protocol + ":" + method + ":" + obfs + ":" + Util.Base64.EncodeUrlSafeBase64(password);
+string param_str = "obfsparam=" + Util.Base64.EncodeUrlSafeBase64(obfsparam ?? "");
+if (!string.IsNullOrEmpty(protocolparam))
+{
+    param_str += "&protoparam=" + Util.Base64.EncodeUrlSafeBase64(protocolparam);
+}
+if (!string.IsNullOrEmpty(remarks))
+{
+    param_str += "&remarks=" + Util.Base64.EncodeUrlSafeBase64(remarks);
+}
+if (!string.IsNullOrEmpty(group))
+{
+    param_str += "&group=" + Util.Base64.EncodeUrlSafeBase64(group);
+}
+if (udp_over_tcp)
+{
+    param_str += "&uot=" + "1";
+}
+if (server_udp_port > 0)
+{
+    param_str += "&udpport=" + server_udp_port.ToString();
+}
+string base64 = Util.Base64.EncodeUrlSafeBase64(main_part + "/?" + param_str);
+return "ssr://" + base64;
