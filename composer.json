@@ -2,7 +2,6 @@
     "require": {
         "nulastudio/middleware": "^1.0",
         "liesauer/simple-http-client": "^1.2",
-        "liesauer/get-middle-text": "^1.0",
-        "khanamiryan/qrcode-detector-decoder": "^1.0"
+        "liesauer/get-middle-text": "^1.0"
     }
 }
